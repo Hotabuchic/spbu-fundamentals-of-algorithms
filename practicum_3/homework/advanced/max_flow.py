@@ -30,12 +30,15 @@ def dfs(Graph: nx.Graph, start: Any, finish: Any, visited: dict, min_flow: Any):
     return 0
 
 
-def max_flow(Graph: nx.Graph, start: Any, finish: Any) -> int:
+def max_flow(Graph: nx.Graph, s: Any, t: Any) -> int:
+    for i in Graph.edges(data=True):
+        i[2]["weight"] = [i[2]["weight"], 0]
+
     value = 0
 
     while True:
         visited_nodes = {node: False for node in Graph.nodes()}
-        flow = dfs(Graph, start, finish, visited_nodes, np.inf)
+        flow = dfs(Graph, s, t, visited_nodes, np.inf)
         if flow > 0:
             value += flow
         else:
@@ -47,7 +50,5 @@ def max_flow(Graph: nx.Graph, start: Any, finish: Any) -> int:
 if __name__ == "__main__":
     # Load the graph
     G = nx.read_edgelist("graph_1.edgelist", create_using=nx.DiGraph)
-    for i in G.edges(data=True):
-        i[2]["weight"] = [i[2]["weight"], 0]
     val = max_flow(G, 0, 5)
     print(f"Maximum flow is {val}. Should be 23")
